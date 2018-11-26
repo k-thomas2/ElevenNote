@@ -37,8 +37,7 @@ namespace ElevenNote.WebMVC.Controllers
                 TempData["SaveResult"] = "Your note was created.";
                 return RedirectToAction("Index");
             };
-            ModelState.AddModelError("", "Note could not be created.");
-
+            ModelState.AddModelError("", "Id Mismatch.");
             return View(model);
         }
 
@@ -49,12 +48,13 @@ namespace ElevenNote.WebMVC.Controllers
 
             return View(model);
         }
-
-        public ActionResult Edit(int id)
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Edit(int id, NoteEdit model)
         {
             var service = CreateNoteService();
             var detail = service.GetNoteById(id);
-            var model =
+           // var model =
                 new NoteEdit
                 {
                     NoteId = detail.NoteId,
